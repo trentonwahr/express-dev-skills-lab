@@ -55,10 +55,37 @@ function deleteSkill(req, res) {
   })
 }
 
+function edit(req, res) {
+  Skill.findById(req.params.skillId)
+  .then(skill => {
+    res.render('skills/edit', {
+      skill
+    })
+  })
+  .catch(error => {
+    console.log(error)
+    res.redirect('/skills')
+  })
+}
+
+function update(req,res) {
+  req.body.have = !!req.body.have
+  Skill.findByIdAndUpdate(req.params.skillId, req.body, {new: true})
+  .then(skill => {
+    res.redirect(`/skills/${skill._id}`)
+  })
+  .catch(error => {
+    console.log(error)
+    res.redirect('/skills')
+  })
+}
+
 export {
   index,
   newSkill as new,
   create,
   show,
   deleteSkill as delete,
+  edit,
+  update,
 }
